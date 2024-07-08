@@ -1,0 +1,166 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencyLocking {
+        lockAllConfigurations()
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version 'latest.release'
+    id 'io.spring.dependency-management' version 'latest.release'
+    id 'jacoco'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'de.cronn'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    enabled = false
+}
+
+bootRun {
+    enabled = false
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Werror'])
+}
+
+test {
+    useJUnitPlatform()
+
+    maxHeapSize = "256m"
+}
+
+dependencies {
+    implementation 'org.liquibase:liquibase-core'
+
+    compileOnly 'org.jetbrains:annotations:latest.release'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'de.cronn:postgres-snapshot-util:latest.release'
+    testImplementation 'de.cronn:liquibase-changelog-generator-postgresql:latest.release'
+    testImplementation 'de.cronn:test-utils:latest.release'
+    testImplementation 'de.cronn:validation-file-assertions:latest.release'
+
+    testImplementation 'org.assertj:assertj-core'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
+
+    components.all { ComponentMetadataDetails details ->
+        if (details.id.version =~ /(?i).+([-.])(CANDIDATE|RC|BETA|ALPHA|M\d+).*/) {
+            details.status = 'milestone'
+        }
+    }
+}
+
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+wrapper {
+    gradleVersion = "8.9"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+    dependsOn test
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            pom {
+                name = project.name
+                description = 'Liquibase extension for native PostgreSQL enums'
+                url = 'https://github.com/cronn/liquibase-postgres-enum-extension'
+
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution = "repo"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "benedikt.waldvogel"
+                        name = "Benedikt Waldvogel"
+                        email = "benedikt.waldvogel@cronn.de"
+                    }
+                }
+
+                scm {
+                    url = "https://github.com/cronn/liquibase-postgres-enum-extension"
+                }
+            }
+
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username = project.hasProperty('nexusUsername') ? project.property('nexusUsername') : System.getenv('NEXUS_USERNAME')
+                password = project.hasProperty('nexusPassword') ? project.property('nexusPassword') : System.getenv('NEXUS_PASSWORD')
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}

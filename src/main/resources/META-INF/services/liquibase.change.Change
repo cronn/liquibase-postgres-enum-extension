@@ -1,0 +1,6 @@
+de.cronn.liquibase.ext.postgres.CreatePostgresEnumTypeChange
+de.cronn.liquibase.ext.postgres.ModifyPostgresEnumTypeChange
+de.cronn.liquibase.ext.postgres.DropPostgresEnumTypeChange
+de.cronn.liquibase.ext.postgres.RenamePostgresEnumTypeChange
+de.cronn.liquibase.ext.postgres.RenamePostgresEnumValueChange
+de.cronn.liquibase.ext.postgres.AddPostgresEnumValuesChange

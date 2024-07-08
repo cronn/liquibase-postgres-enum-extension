@@ -1,0 +1,3 @@
+de.cronn.liquibase.ext.postgres.diff.MissingPostgresEnumTypeChangeGenerator
+de.cronn.liquibase.ext.postgres.diff.ChangedPostgresEnumTypeChangeGenerator
+de.cronn.liquibase.ext.postgres.diff.UnexpectedPostgresEnumTypeChangeGenerator

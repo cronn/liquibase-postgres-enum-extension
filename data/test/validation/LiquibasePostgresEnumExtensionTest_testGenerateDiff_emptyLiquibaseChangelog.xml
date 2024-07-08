@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Jane Doe" id="[MASKED]-1">
+        <ext:createPostgresEnumType name="language" values="DE, EN, ES, FR"/>
+    </changeSet>
+    <changeSet author="Jane Doe" id="[MASKED]-2">
+        <ext:createPostgresEnumType name="color" values="BLACK, GREEN, RED"/>
+    </changeSet>
+    <changeSet author="Jane Doe" id="[MASKED]-3">
+        <createTable tableName="entity_using_language1">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_using_language1"/>
+            </column>
+            <column name="language" type="LANGUAGE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Jane Doe" id="[MASKED]-4">
+        <createTable tableName="entity_using_language2">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_using_language2"/>
+            </column>
+            <column name="language" type="LANGUAGE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Jane Doe" id="[MASKED]-5">
+        <createTable tableName="simple_entity_with_enum">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_simple_entity_with_enum"/>
+            </column>
+            <column name="color" type="COLOR"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

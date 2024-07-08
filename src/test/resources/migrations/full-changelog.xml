@@ -1,0 +1,67 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="Jane Doe" id="change1">
+        <ext:createPostgresEnumType name="colour" values="BLACK"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change2">
+        <ext:renamePostgresEnumType oldName="colour" newName="color"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change3">
+        <ext:addPostgresEnumValues enumTypeName="color" valuesToAdd="GREEEN"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change4">
+        <createTable tableName="simple_entity_with_enum">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_simple_entity_with_enum"/>
+            </column>
+            <column name="color" type="COLOR"/>
+        </createTable>
+
+        <sql>INSERT INTO simple_entity_with_enum (id, color) VALUES (1, 'GREEEN')</sql>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change5">
+        <ext:renamePostgresEnumValue enumTypeName="color" oldValue="GREEEN" newValue="GREEN"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change6">
+        <ext:createPostgresEnumType name="drop_me" values="YELLOW, BLACK"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change7">
+        <ext:dropPostgresEnumType name="drop_me"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change8">
+        <ext:createPostgresEnumType name="should_be_dropped" values="YELLOW, BLACK"/>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change9">
+        <ext:createPostgresEnumType name="language" values="EN, FR, UK, DE"/>
+
+        <createTable tableName="entity_using_language1">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_using_language1"/>
+            </column>
+            <column name="language" type="LANGUAGE"/>
+        </createTable>
+
+        <createTable tableName="entity_using_language2">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_entity_using_language2"/>
+            </column>
+            <column name="language" type="LANGUAGE"/>
+        </createTable>
+
+        <sql>INSERT INTO entity_using_language1 (id, language) VALUES (1, 'EN')</sql>
+        <sql>INSERT INTO entity_using_language1 (id, language) VALUES (2, 'DE')</sql>
+    </changeSet>
+
+    <changeSet author="Jane Doe" id="change10">
+        <ext:modifyPostgresEnumType name="language" newValues="EN, FR, CH, DE"/>
+    </changeSet>
+</databaseChangeLog>
