@@ -26,14 +26,15 @@ Add the following Maven **runtime** dependency to your project:
 
 ### Hibernate
 
-Users of Hibernate typically annotate the enum columns with
+For Hibernate entities, we recommend annotating attributes of enum type as shown below:
 ```java
 @JdbcType(PostgreSQLEnumJdbcType.class)
 Status status;
 ```
-where `Status` is an enum class.
 
 ## Commands ##
+
+The library provides additional liquibase commands, that can be used within a `changeSet`:
 
 ### Creating an enum type
 
@@ -55,8 +56,8 @@ where `Status` is an enum class.
 
 ### Removing one or more values of an existing enum
 
-PostgreSQL does not yet support removing of values of an existing enum. Instead, we implement a workaround described in
-https://blog.yo1.dog/updating-enum-values-in-postgresql-the-safe-and-easy-way/ by replacing the enum with a new enum type that has different values.
+PostgreSQL does not yet support removing of values of an existing enum. Instead, we implement a workaround
+by replacing the enum with a new enum type that has different values (as described in [this blog post][yo1dog-blog]).
 
 ⚠ You need to be extra careful when you drop an enum value! First, you need to update the existing tables
 to make sure that the value is not used anymore, typically using an `UPDATE` statement.
@@ -84,3 +85,4 @@ to make sure that the value is not used anymore, typically using an `UPDATE` sta
 
 [postgresql-enums]: https://www.postgresql.org/docs/current/datatype-enum.html
 [liquibase-changelog-generator]: https://github.com/cronn/liquibase-changelog-generator
+[yo1dog-blog]: https://blog.yo1.dog/updating-enum-values-in-postgresql-the-safe-and-easy-way/
