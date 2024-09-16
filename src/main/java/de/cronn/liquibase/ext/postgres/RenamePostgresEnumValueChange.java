@@ -6,7 +6,7 @@ import liquibase.change.DatabaseChangeProperty;
 import liquibase.database.Database;
 import liquibase.exception.ValidationErrors;
 import liquibase.statement.SqlStatement;
-import liquibase.statement.core.RawCallStatement;
+import liquibase.statement.core.RawSqlStatement;
 
 @DatabaseChange(name = "renamePostgresEnumValue",
 	description = "Renames an enum value of an existing Postgres enum type",
@@ -61,7 +61,7 @@ public class RenamePostgresEnumValueChange extends AbstractPostgresEnumChange {
 	@Override
 	public SqlStatement[] generateStatements(Database database) {
 		return new SqlStatement[] {
-			new RawCallStatement("alter type %s rename value '%s' to '%s'".formatted(enumTypeName, oldValue, newValue))
+			new RawSqlStatement("alter type %s rename value '%s' to '%s'".formatted(enumTypeName, oldValue, newValue))
 		};
 	}
 }

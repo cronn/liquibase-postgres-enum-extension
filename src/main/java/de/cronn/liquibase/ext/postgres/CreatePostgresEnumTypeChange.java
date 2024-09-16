@@ -10,7 +10,7 @@ import liquibase.change.DatabaseChangeProperty;
 import liquibase.database.Database;
 import liquibase.exception.ValidationErrors;
 import liquibase.statement.SqlStatement;
-import liquibase.statement.core.RawCallStatement;
+import liquibase.statement.core.RawSqlStatement;
 
 @DatabaseChange(
 	name = "createPostgresEnumType",
@@ -68,9 +68,9 @@ public class CreatePostgresEnumTypeChange extends AbstractPostgresEnumChange {
 	public SqlStatement[] generateStatements(Database database) {
 		String valuesForSql = values.stream().map(value -> "'" + value + "'").collect(Collectors.joining(", "));
 		return new SqlStatement[] {
-			new RawCallStatement("create type %s as enum (%s)".formatted(name, valuesForSql)),
-			new RawCallStatement("create cast (varchar as %s) with inout as implicit".formatted(name)),
-			new RawCallStatement("create cast (%s as varchar) with inout as implicit".formatted(name))
+			new RawSqlStatement("create type %s as enum (%s)".formatted(name, valuesForSql)),
+			new RawSqlStatement("create cast (varchar as %s) with inout as implicit".formatted(name)),
+			new RawSqlStatement("create cast (%s as varchar) with inout as implicit".formatted(name))
 		};
 	}
 }

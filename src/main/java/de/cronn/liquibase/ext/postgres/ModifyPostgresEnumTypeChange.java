@@ -17,7 +17,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.ValidationErrors;
 import liquibase.statement.SqlStatement;
-import liquibase.statement.core.RawCallStatement;
+import liquibase.statement.core.RawSqlStatement;
 
 @DatabaseChange(
 	name = "modifyPostgresEnumType",
@@ -90,7 +90,7 @@ public class ModifyPostgresEnumTypeChange extends AbstractPostgresEnumChange {
 		// and https://stackoverflow.com/a/47305844/4308
 
 		String temporaryName = getName() + "_old";
-		statements.add(new RawCallStatement("alter type %s rename to %s".formatted(getName(), temporaryName)));
+		statements.add(new RawSqlStatement("alter type %s rename to %s".formatted(getName(), temporaryName)));
 
 		CreatePostgresEnumTypeChange createPostgresEnumTypeChange = new CreatePostgresEnumTypeChange(getName(), newValues);
 		statements.addAll(Arrays.asList(createPostgresEnumTypeChange.generateStatements(database)));
@@ -103,7 +103,7 @@ public class ModifyPostgresEnumTypeChange extends AbstractPostgresEnumChange {
 				String tableName = resultSet.getString("table_name");
 				String columnName = resultSet.getString("column_name");
 				statements.add(
-					new RawCallStatement("alter table %s alter column %s type %s using %s::text::%s"
+					new RawSqlStatement("alter table %s alter column %s type %s using %s::text::%s"
 						.formatted(tableName, columnName, getName(), columnName, getName())));
 			}
 		} catch (SQLException | DatabaseException e) {

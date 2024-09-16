@@ -9,7 +9,7 @@ import liquibase.change.DatabaseChangeProperty;
 import liquibase.database.Database;
 import liquibase.exception.ValidationErrors;
 import liquibase.statement.SqlStatement;
-import liquibase.statement.core.RawCallStatement;
+import liquibase.statement.core.RawSqlStatement;
 
 @DatabaseChange(name = "addPostgresEnumValues",
 	description = "Adds enum values to an existing Postgres enum type",
@@ -63,7 +63,7 @@ public class AddPostgresEnumValuesChange extends AbstractPostgresEnumChange {
 	public SqlStatement[] generateStatements(Database database) {
 		List<SqlStatement> statements = new ArrayList<>();
 		for (String valueToAdd : valuesToAdd) {
-			statements.add(new RawCallStatement("alter type %s add value '%s'".formatted(enumTypeName, valueToAdd)));
+			statements.add(new RawSqlStatement("alter type %s add value '%s'".formatted(enumTypeName, valueToAdd)));
 		}
 		return statements.toArray(SqlStatement[]::new);
 	}
