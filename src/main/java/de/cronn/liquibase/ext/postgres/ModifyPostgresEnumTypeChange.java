@@ -83,6 +83,12 @@ public class ModifyPostgresEnumTypeChange extends AbstractPostgresEnumChange {
 	}
 
 	@Override
+	public boolean generateStatementsVolatile(Database database) {
+		// The generated statements depend on the current database state
+		return true;
+	}
+
+	@Override
 	public SqlStatement[] generateStatements(Database database) {
 		List<SqlStatement> statements = new ArrayList<>();
 
