@@ -2,6 +2,7 @@ package de.cronn.liquibase.ext.postgres;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,9 +96,9 @@ public class ModifyPostgresEnumTypeChange extends AbstractPostgresEnumChange {
 		statements.addAll(Arrays.asList(createPostgresEnumTypeChange.generateStatements(database)));
 
 		JdbcConnection jdbcConnection = (JdbcConnection) database.getConnection();
-		try {
-			String defaultSchemaName = database.getDefaultSchemaName();
-			ResultSet resultSet = jdbcConnection.createStatement().executeQuery(SELECT_ALL_ENUM_USAGES_QUERY.formatted(defaultSchemaName, getName()));
+		String defaultSchemaName = database.getDefaultSchemaName();
+		try (Statement statement = jdbcConnection.createStatement();
+			 ResultSet resultSet = statement.executeQuery(SELECT_ALL_ENUM_USAGES_QUERY.formatted(defaultSchemaName, getName()))) {
 			while (resultSet.next()) {
 				String tableName = resultSet.getString("table_name");
 				String columnName = resultSet.getString("column_name");

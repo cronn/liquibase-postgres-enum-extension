@@ -3,6 +3,7 @@ package de.cronn.liquibase.ext.postgres.diff;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,11 +42,10 @@ public class PostgresEnumTypeSnapshotGenerator extends JdbcSnapshotGenerator {
 			return;
 		}
 		if (snapshot.getDatabase().getConnection() instanceof JdbcConnection jdbcConnection) {
-			try {
-				Schema schema = foundObject.getSchema();
-				String schemaName = schema.getName();
-				ResultSet resultSet = jdbcConnection.createStatement().executeQuery(COLLECT_ENUMS_QUERY.formatted(schemaName));
-
+			Schema schema = foundObject.getSchema();
+			String schemaName = schema.getName();
+			try (Statement statement = jdbcConnection.createStatement();
+				 ResultSet resultSet = statement.executeQuery(COLLECT_ENUMS_QUERY.formatted(schemaName))) {
 				while (resultSet.next()) {
 					String typeName = resultSet.getString("name");
 					List<String> values = collectValues(resultSet.getArray("values"));
