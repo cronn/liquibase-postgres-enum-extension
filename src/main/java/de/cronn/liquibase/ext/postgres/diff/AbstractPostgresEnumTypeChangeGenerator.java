@@ -5,23 +5,23 @@ import liquibase.diff.output.changelog.AbstractChangeGenerator;
 import liquibase.structure.DatabaseObject;
 
 public abstract class AbstractPostgresEnumTypeChangeGenerator extends AbstractChangeGenerator {
-	@Override
-	public int getPriority(Class<? extends DatabaseObject> objectType, Database database) {
-		if (PostgresEnumType.class.isAssignableFrom(objectType)) {
-			return PRIORITY_DEFAULT;
-		}
-		return PRIORITY_NONE;
-	}
+  @Override
+  public int getPriority(Class<? extends DatabaseObject> objectType, Database database) {
+    if (PostgresEnumType.class.isAssignableFrom(objectType)) {
+      return PRIORITY_DEFAULT;
+    }
+    return PRIORITY_NONE;
+  }
 
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Class<? extends DatabaseObject>[] runAfterTypes() {
-		return new Class[0];
-	}
+  @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public Class<? extends DatabaseObject>[] runAfterTypes() {
+    return new Class[0];
+  }
 
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Class<? extends DatabaseObject>[] runBeforeTypes() {
-		return new Class[0];
-	}
+  @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public Class<? extends DatabaseObject>[] runBeforeTypes() {
+    return new Class[0];
+  }
 }

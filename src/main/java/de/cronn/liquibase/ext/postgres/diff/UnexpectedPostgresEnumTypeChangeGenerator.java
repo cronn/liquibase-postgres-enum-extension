@@ -9,15 +9,15 @@ import liquibase.diff.output.changelog.UnexpectedObjectChangeGenerator;
 import liquibase.structure.DatabaseObject;
 
 public class UnexpectedPostgresEnumTypeChangeGenerator
-	extends AbstractPostgresEnumTypeChangeGenerator implements UnexpectedObjectChangeGenerator {
+    extends AbstractPostgresEnumTypeChangeGenerator implements UnexpectedObjectChangeGenerator {
 
-	@Override
-	public Change[] fixUnexpected(
-		DatabaseObject unexpectedObject,
-		DiffOutputControl control,
-		Database referenceDatabase,
-		Database comparisonDatabase,
-		ChangeGeneratorChain chain) {
-		return new Change[] { new DropPostgresEnumTypeChange(unexpectedObject.getName()) };
-	}
+  @Override
+  public Change[] fixUnexpected(
+      DatabaseObject unexpectedObject,
+      DiffOutputControl control,
+      Database referenceDatabase,
+      Database comparisonDatabase,
+      ChangeGeneratorChain chain) {
+    return new Change[] {new DropPostgresEnumTypeChange(unexpectedObject.getName())};
+  }
 }

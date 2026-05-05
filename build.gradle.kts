@@ -22,6 +22,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("org.jreleaser") version "latest.release"
+    id("com.diffplug.spotless") version "latest.release"
 }
 
 group = "de.cronn"
@@ -34,6 +35,20 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        ktlint()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.bootJar {
