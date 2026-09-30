@@ -22,7 +22,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 class DumpWithFullLiquibaseConfigTest extends BaseTest {
 
   @Container @ServiceConnection
-  static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:18.1");
+  static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:18.6");
 
   @Autowired DataSource dataSource;
 
