@@ -87,7 +87,7 @@ to make sure that the value is no longer used, typically using an `UPDATE` state
 
 ## Requirements ##
 
-- Java 17+
+- Java 21+
 - Liquibase 5.0.1+
 
 [postgresql-enums]: https://www.postgresql.org/docs/current/datatype-enum.html
