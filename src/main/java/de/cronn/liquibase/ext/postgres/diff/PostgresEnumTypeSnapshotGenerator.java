@@ -20,12 +20,13 @@ public class PostgresEnumTypeSnapshotGenerator extends JdbcSnapshotGenerator {
   @Language("PostgreSQL")
   private static final String COLLECT_ENUMS_QUERY =
       """
-		select t.typname as name, array_agg(distinct e.enumlabel) as values
-		from pg_enum e
-		join pg_type t on t.oid = e.enumtypid
-		join pg_namespace ns on t.typnamespace = ns.oid and ns.nspname = '%s'
-		group by t.typname
-		order by t.typname""";
+      select t.typname as name, array_agg(distinct e.enumlabel) as values
+      from pg_enum e
+      join pg_type t on t.oid = e.enumtypid
+      join pg_namespace ns on t.typnamespace = ns.oid and ns.nspname = '%s'
+      group by t.typname
+      order by t.typname\
+      """;
 
   @SuppressWarnings("rawtypes")
   public PostgresEnumTypeSnapshotGenerator() {
