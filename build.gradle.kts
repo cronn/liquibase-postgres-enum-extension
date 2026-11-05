@@ -23,6 +23,7 @@ plugins {
     id("signing")
     id("org.jreleaser") version "latest.release"
     id("com.diffplug.spotless") version "latest.release"
+    id("de.cronn.validation-files") version "latest.release"
 }
 
 group = "de.cronn"
