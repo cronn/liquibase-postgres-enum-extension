@@ -26,14 +26,15 @@ public class ModifyPostgresEnumTypeChange extends AbstractPostgresEnumChange {
   @Language("PostgreSQL")
   private static final String SELECT_ALL_ENUM_USAGES_QUERY =
       """
-		SELECT c.relname AS table_name, a.attname AS column_name
-		FROM pg_attribute a
-		JOIN pg_class c ON a.attrelid = c.oid
-		JOIN pg_namespace n ON c.relnamespace = n.oid AND n.nspname = '%s'
-		WHERE a.atttypid = (SELECT oid FROM pg_type WHERE typname = '%s')
-		  AND c.relkind = 'r'
-		  AND NOT a.attisdropped
-		ORDER BY table_name, column_name""";
+      SELECT c.relname AS table_name, a.attname AS column_name
+      FROM pg_attribute a
+      JOIN pg_class c ON a.attrelid = c.oid
+      JOIN pg_namespace n ON c.relnamespace = n.oid AND n.nspname = '%s'
+      WHERE a.atttypid = (SELECT oid FROM pg_type WHERE typname = '%s')
+        AND c.relkind = 'r'
+        AND NOT a.attisdropped
+      ORDER BY table_name, column_name\
+      """;
 
   private String name;
   private List<String> newValues = new ArrayList<>();

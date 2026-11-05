@@ -61,10 +61,9 @@ public class AddPostgresEnumValuesChange extends AbstractPostgresEnumChange {
   @Override
   public SqlStatement[] generateStatements(Database database) {
     return valuesToAdd.stream()
-        .map(
-            valueToAdd ->
-                new RawParameterizedSqlStatement(
-                    "alter type %s add value '%s'".formatted(enumTypeName, valueToAdd)))
+        .map(valueToAdd ->
+            new RawParameterizedSqlStatement(
+                "alter type %s add value '%s'".formatted(enumTypeName, valueToAdd)))
         .toArray(SqlStatement[]::new);
   }
 }
